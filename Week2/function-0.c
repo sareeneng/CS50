@@ -12,7 +12,6 @@ int main(void)
 }
 
 // Says hello to someone by name
-
 void PrintName(string name)
 {
     printf("hello, %s\n", name);
