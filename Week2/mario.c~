@@ -11,8 +11,8 @@ int main(void)
         printf("height: ");
         h = GetInt();
     }while(h<2);
-       
-    int widthOfPyramid = h;
+
+    int widthOfPyramid = h+1;
 
     for(int i=0; i<h; i++)
     {
@@ -21,13 +21,15 @@ int main(void)
         //so number of hashes = i+2
         //e.g. in first line (i=0), two hashes
         //in last line(i=h-1), h-1+2 hashes = h+1 hashes
-               
-        for(int j=0; j<(widthOfPyramid)-(i+1); j++)
-            printf(" ");
-        for(int j=widthOfPyramid-(i+2); j<widthOfPyramid; j++)
-            printf("#");
         
-        printf("\n");
+        char currString[i+3];
+        currString[i+2]='\0'; // need to terminate each string
+        
+        for(int j=0; j<i+2; j++)
+           currString[j]='#';
+            
+        printf("%*s\n", widthOfPyramid,currString);
+        
     }
 
 }
