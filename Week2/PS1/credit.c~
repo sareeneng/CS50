@@ -27,9 +27,14 @@ int main (void)
     
     while(num>0)
     {
+        printf("new Loop\n");
+        printf("%llu\n", num);
+
         int currDig = num%10;
         sum += currDig;
         num = (num-currDig)/10;
+        printf("%llu\n", num);
+
             
         if(num > 9 && num < 99)
             ccType = getCCType(num);
@@ -43,9 +48,8 @@ int main (void)
             
         sum += addToSum;
         num = (num-currDig)/10;
-        
-        if(num > 9 && num < 99)
-            ccType = getCCType(num);
+        printf("%llu\n", num);
+
     }
     
     if(sum%10 == 0)
