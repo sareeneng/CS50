@@ -37,7 +37,7 @@ int main(int argc, string argv[])
     //So now I need to brute-force it. 
     
     string prefix=malloc(4);
-    bruteForce(prefix,0,4, salt, fullKey);
+    bruteForce(prefix,0,8, salt, fullKey);
         
     return 0;
 }
@@ -100,7 +100,7 @@ void bruteForce(string prefix, int currPosition, int maxLen, string salt, string
         
         //Now we can do operations on prefix
         
-        for(int i=0; i<=90; i++)
+        for(int i=0; i<=126; i++)
         {
             prefix[currPosition]=i;
             if(strlen(prefix)>0)
@@ -113,7 +113,7 @@ void bruteForce(string prefix, int currPosition, int maxLen, string salt, string
                 }
             }
             if(i==0)
-                i=48;   //Skip all the non-printable characters
+                i=32;   //Skip all the non-printable characters
             if(!found)
                 bruteForce(prefix, currPosition+1, maxLen, salt, fullKey);
         }
