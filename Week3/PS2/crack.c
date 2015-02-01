@@ -100,21 +100,13 @@ void bruteForce(string prefix, int currPosition, int maxLen)
         
         //Now we can do operations on prefix
         
-        for(int i=65; i<=67; i++)
+        for(int i=0; i<=126; i++)
         {
             prefix[currPosition]=i;
             printf("%s\n",prefix);
-            
-            if((int)prefixCopy[currPosition]==0)
-            {
-                prefixCopy[currPosition]=65;
-                bruteForce(prefixCopy,currPosition+1,maxLen);
-            }
-            else if((int)prefixCopy[currPosition]<67)
-            {
-                prefixCopy[currPosition]=prefixCopy[currPosition]+1;
-                bruteForce(prefixCopy,currPosition+1,maxLen);
-            }
+            if(i==0)
+                i=32;
+            bruteForce(prefix, currPosition+1, maxLen);
         }
         //Then we need to change our old copy so that the first character is added by 1
                     
