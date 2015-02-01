@@ -8,12 +8,12 @@
 bool dictionaryAttack(string, string);
 char *GetSalt(string);
 char *GetKeyWithoutSalt(string);
-void bruteForce(string, int, int);
+void bruteForce(string, int, int, string, string);
+
+bool found = false;
 
 int main(int argc, string argv[])
-{
-    //printf("%s",crypt("asdf","50"));
-    
+{   
     if(argc!=2)
     {
         printf("Only one argument accepted\n");
@@ -36,8 +36,8 @@ int main(int argc, string argv[])
     //And I know that my word is not in the dictionary
     //So now I need to brute-force it. 
     
-    string prefix=malloc(3);
-    bruteForce(prefix,0,3);
+    string prefix=malloc(4);
+    bruteForce(prefix,0,4, salt, fullKey);
         
     return 0;
 }
@@ -89,10 +89,10 @@ char *GetKeyWithoutSalt(string fullKey)
     return keyWithoutSalt;
 }
 
-void bruteForce(string prefix, int currPosition, int maxLen)
+void bruteForce(string prefix, int currPosition, int maxLen, string salt, string fullKey)
 {   
     //Function should terminate if we are higher than maxLen
-    if (currPosition!=maxLen)
+    if (currPosition!=maxLen && !found)
     {
         //Make a copy of our current prefix in a different part of memory
         string prefixCopy = malloc(strlen(prefix)+1);
@@ -100,17 +100,23 @@ void bruteForce(string prefix, int currPosition, int maxLen)
         
         //Now we can do operations on prefix
         
-        for(int i=0; i<=126; i++)
+        for(int i=0; i<=90; i++)
         {
             prefix[currPosition]=i;
-            printf("%s\n",prefix);
+            if(strlen(prefix)>0)
+            {
+                string encCurrString = crypt(prefix,salt);
+                if(strcmp(encCurrString,fullKey)==0)
+                {
+                    printf("%s\n",prefix);
+                    found=true;
+                }
+            }
             if(i==0)
-                i=32;
-            bruteForce(prefix, currPosition+1, maxLen);
+                i=48;   //Skip all the non-printable characters
+            if(!found)
+                bruteForce(prefix, currPosition+1, maxLen, salt, fullKey);
         }
-        //Then we need to change our old copy so that the first character is added by 1
-                    
-        
     }
 
 }
