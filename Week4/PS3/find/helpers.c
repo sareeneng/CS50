@@ -37,7 +37,7 @@ bool search(int value, int values[], int n)
         else if(values[indexToCheck]>value)
             return (false || search(value, &values[0], n/2));
         else
-            return (false || search(value, &values[n/2+1], n/2));
+            return (false || search(value, &values[n/2+1], n/2-(n+1)%2));
     }
     
 }
