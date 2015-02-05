@@ -20,7 +20,7 @@
 #include <time.h>
 
 // constant
-#define LIMIT 65536
+#define LIMIT 20
 
 int main(int argc, string argv[])
 {
