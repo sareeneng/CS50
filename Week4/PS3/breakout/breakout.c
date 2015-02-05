@@ -36,6 +36,7 @@
 // width of paddle
 #define PADDLE_WIDTH RADIUS*6
 #define PADDLE_HEIGHT 10
+#define PADDLE_BUFFER 30
 
 // prototypes
 void initBricks(GWindow window);
@@ -77,7 +78,25 @@ int main(void)
     // keep playing until game over
     while (lives > 0 && bricks > 0)
     {
-        // TODO
+        while(true)
+        {
+            // check for mouse event
+            GEvent event = getNextEvent(MOUSE_EVENT);
+
+            // if we heard one
+            if (event != NULL)
+            {
+                // if the event was movement
+                if (getEventType(event) == MOUSE_MOVED)
+                {
+                    // ensure paddle follows cursor only in Y direction
+                    double x = getX(event)-PADDLE_WIDTH/2;
+                    if(x>0 && x+PADDLE_WIDTH<WIDTH)
+                        setLocation(paddle, x, HEIGHT-PADDLE_BUFFER);
+                }
+            }
+        
+        }
     }
 
     // wait for click before exiting
@@ -111,7 +130,7 @@ GOval initBall(GWindow window)
 GRect initPaddle(GWindow window)
 {
     int xcoord = WIDTH/2-PADDLE_WIDTH/2;
-    int ycoord = HEIGHT-30;
+    int ycoord = HEIGHT-PADDLE_BUFFER;
     GRect paddle = newGRect(xcoord,ycoord,PADDLE_WIDTH,PADDLE_HEIGHT);
     setFilled(paddle, true);
     setColor(paddle, "BLACK");
