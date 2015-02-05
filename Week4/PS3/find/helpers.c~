@@ -20,12 +20,26 @@ void swap(int*, int*);
  
 bool search(int value, int values[], int n)
 {
-    //Linear search
-    for(int i=0; i<n; i++)
-        if(values[i]==value)
+    //Binary search
+    //Base case - n=1 - if so, check number and return false if not number and return true if so
+        
+    if(n==1)
+        if(values[0]==value)
             return true;
+        else
+            return false;
+    else
+    {
+        int indexToCheck = n/2;
+        
+        if(values[indexToCheck]==value)
+            return true;
+        else if(values[indexToCheck]>value)
+            return (false || search(value, &values[0], n/2));
+        else
+            return (false || search(value, &values[n/2+1], n/2));
+    }
     
-    return false;
 }
 
 /**
@@ -50,10 +64,7 @@ void sort(int values[], int n)
             }    
         }
     }
-    
-    for(int i=0; i<n; i++)
-        printf("%i ", values[i]);
-    
+       
     return;
 }
 
