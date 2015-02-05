@@ -23,9 +23,15 @@
 
 // number of rows of bricks
 #define ROWS 5
+#define BRICK_HEIGHT 10
+#define BRICK_HEIGHT_BUFFER 50
 
 // number of columns of bricks
 #define COLS 10
+
+//space between bricks
+#define BRICK_X_BUFFER 5
+#define BRICK_Y_BUFFER 5
 
 // radius of ball in pixels
 #define RADIUS 10
@@ -33,7 +39,7 @@
 // lives
 #define LIVES 3
 
-// width of paddle
+//  paddle characteristics
 #define PADDLE_WIDTH RADIUS*6
 #define PADDLE_HEIGHT 10
 #define PADDLE_BUFFER 30
@@ -112,7 +118,31 @@ int main(void)
  */
 void initBricks(GWindow window)
 {
-    // TODO
+    //determine dimension of each brick
+    
+    int width = WIDTH/COLS-BRICK_X_BUFFER;    //30
+    int height = BRICK_HEIGHT;              //30
+    
+    for(int i=0; i<ROWS; i++)
+        for(int j=0; j<COLS; j++)
+        {
+            int x = j*width-BRICK_X_BUFFER/2+BRICK_X_BUFFER*(j+1);
+            int y = BRICK_HEIGHT_BUFFER+i*height + BRICK_Y_BUFFER*(i+1);
+            GRect brick = newGRect(x,y,width,height);
+            setFilled(brick,true);
+            string color;
+            switch(i)
+            {
+                case 0:color="BLACK";break;
+                case 1:color="RED";break;
+                case 2:color="YELLOW";break;
+                case 3:color="GREEN";break;
+                case 4:color="BLUE";break;
+                default:color="ORANGE";
+            }
+            setColor(brick,color);
+            add(window,brick);
+        }   
 }
 
 /**
