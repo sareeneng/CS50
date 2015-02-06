@@ -39,6 +39,12 @@
 // lives
 #define LIVES 3
 
+//Pause between moving the ball
+#define PAUSE 10
+
+//Speed multiplier to multiply by drand48 to get velocity
+#define SPEED_MULTIPLIER 3
+
 //  paddle characteristics
 #define PADDLE_WIDTH RADIUS*6
 #define PADDLE_HEIGHT 10
@@ -81,8 +87,8 @@ int main(void)
     // number of points initially
     int points = 0;
     
-    double x_velocity = drand48()*3;
-    double y_velocity = drand48()*3;
+    double x_velocity = drand48()*SPEED_MULTIPLIER+1;
+    double y_velocity = drand48()*SPEED_MULTIPLIER*2+1;
 
     // keep playing until game over
     while (lives > 0 && bricks > 0)
@@ -91,7 +97,19 @@ int main(void)
         {
             //Code to make ball move around
             move(ball,x_velocity,y_velocity);
-            pause(10);
+            pause(PAUSE);
+            
+            GObject objectHit = detectCollision(window,ball);
+            if(objectHit!=NULL)
+                if(strcmp(getType(objectHit),"GRect")==0)
+                {
+                    y_velocity = -y_velocity;
+                    if(objectHit != paddle)
+                        removeGWindow(window, objectHit);
+                    else
+                        x_velocity = (getX(ball)+RADIUS/2-(getX(paddle)+PADDLE_WIDTH/2))/(PADDLE_WIDTH/4);
+                }
+                
             if ( (getX(ball)+getWidth(ball)>=getWidth(window)) || (getX(ball)<=0))
                 x_velocity = -x_velocity;
             if ( (getY(ball)+getWidth(ball)>=getHeight(window)) || (getY(ball)<=0))
