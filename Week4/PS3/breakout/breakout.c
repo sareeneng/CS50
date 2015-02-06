@@ -80,12 +80,23 @@ int main(void)
 
     // number of points initially
     int points = 0;
+    
+    double x_velocity = drand48()*3;
+    double y_velocity = drand48()*3;
 
     // keep playing until game over
     while (lives > 0 && bricks > 0)
     {
         while(true)
         {
+            //Code to make ball move around
+            move(ball,x_velocity,y_velocity);
+            pause(10);
+            if ( (getX(ball)+getWidth(ball)>=getWidth(window)) || (getX(ball)<=0))
+                x_velocity = -x_velocity;
+            if ( (getY(ball)+getWidth(ball)>=getHeight(window)) || (getY(ball)<=0))
+                y_velocity = -y_velocity;
+            
             // check for mouse event
             GEvent event = getNextEvent(MOUSE_EVENT);
 
@@ -97,7 +108,7 @@ int main(void)
                 {
                     // ensure paddle follows cursor only in Y direction
                     double x = getX(event)-PADDLE_WIDTH/2;
-                    printf("%0.f %0.f\n", getX(event),getY(event));
+                   // printf("%0.f %0.f\n", getX(event),getY(event));
                     if(x>0 && x+PADDLE_WIDTH<WIDTH)
                         setLocation(paddle, x, HEIGHT-PADDLE_BUFFER);
                 }
