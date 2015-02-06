@@ -22,7 +22,7 @@ int main (void)
     //3) Add together the digits that weren't involved yet
     //4) if the total's last digit is 0, number is valid
     
-    int sum;
+    int sum=0;
     string ccType;
     
     while(num>0)
@@ -48,10 +48,10 @@ int main (void)
             ccType = getCCType(num);
     }
     
-    if(sum%10 == 0)
-        printf("VALID!\n");
-    else
-        printf("NOT VALID!\n");
+//    if(sum%10 == 0)
+//        printf("VALID!\n");
+//    else
+//        printf("NOT VALID!\n");
     
     printf("%s\n",ccType);
     
@@ -61,12 +61,12 @@ string getCCType(long long n)
 {
    // printf("test%llu",n);
     if(n>50 && n<56)
-        return "MC";
+        return "MASTERCARD";
     else if (n==34 || n==37)
         return "AMEX";
     else if (n > 39 && n < 50)
         return "VISA";
         
-    return "UNKNOWN";
+    return "INVALID";
 
 }

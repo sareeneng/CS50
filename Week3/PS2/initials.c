@@ -4,12 +4,18 @@
 #include <stdlib.h>
 #include <cs50.h>
 #include <ctype.h>
+#include <string.h>
 
 int main(int argc, string argv[])
 {
-    for(int i=1; i<argc; i++)
-        printf("%c",toupper(argv[i][0]));
-    
+    string name = GetString();
+    char* pch = strtok(name," ,.-");
+    while(pch != NULL)
+    {
+        printf("%c",toupper(pch[0]));
+        pch = strtok(NULL," ,.-");
+    }
     printf("\n");
+    return 0;
 }
 

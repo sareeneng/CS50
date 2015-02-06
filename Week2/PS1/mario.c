@@ -10,7 +10,9 @@ int main(void)
     {
         printf("height: ");
         h = GetInt();
-    }while(h<2);
+        if(h==0)
+            return 0;
+    }while(h<1 || h>23);
 
     int widthOfPyramid = h+1;
 
