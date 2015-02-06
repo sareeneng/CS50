@@ -97,9 +97,11 @@ int main(void)
                 {
                     // ensure paddle follows cursor only in Y direction
                     double x = getX(event)-PADDLE_WIDTH/2;
+                    printf("%0.f %0.f\n", getX(event),getY(event));
                     if(x>0 && x+PADDLE_WIDTH<WIDTH)
                         setLocation(paddle, x, HEIGHT-PADDLE_BUFFER);
                 }
+                
             }
         
         }
@@ -150,8 +152,12 @@ void initBricks(GWindow window)
  */
 GOval initBall(GWindow window)
 {
-    // TODO
-    return NULL;
+    GOval ball = newGOval(WIDTH/2-RADIUS,HEIGHT/2-RADIUS,RADIUS*2, RADIUS*2);
+    setFilled(ball, true);
+    setColor(ball, "BLACK");
+    add(window, ball);
+    
+    return ball;
 }
 
 /**
