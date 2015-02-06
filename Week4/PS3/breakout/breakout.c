@@ -87,8 +87,8 @@ int main(void)
     // number of points initially
     int points = 0;
     
-    double x_velocity = drand48()*SPEED_MULTIPLIER+1;
-    double y_velocity = drand48()*SPEED_MULTIPLIER*2+1;
+    double x_velocity = 2+drand48()*SPEED_MULTIPLIER;
+    double y_velocity = 2+drand48()*SPEED_MULTIPLIER;
     
     bool readyToPlay=false;
     
@@ -113,7 +113,11 @@ int main(void)
                 {
                     y_velocity = -y_velocity;
                     if(objectHit != paddle)
+                    {
                         removeGWindow(window, objectHit);
+                        points++;
+                        updateScoreboard(window,label,points);
+                    }
                     else
                         x_velocity = (getX(ball)+RADIUS/2-(getX(paddle)+PADDLE_WIDTH/2))/(PADDLE_WIDTH/4);
                 }
@@ -123,7 +127,7 @@ int main(void)
             
             if ( getY(ball)<=0)
                 y_velocity = -y_velocity;
-            else if(getY(ball)>HEIGHT)
+            else if(getY(ball)>getY(paddle))
             {
                 lives--;
                 removeGWindow(window,ball);
@@ -226,8 +230,13 @@ GRect initPaddle(GWindow window)
  */
 GLabel initScoreboard(GWindow window)
 {
-    // TODO
-    return NULL;
+    GLabel label = newGLabel("0");
+    setFont(label, "SansSerif-36");
+    double x = (getWidth(window) - getWidth(label)) / 2;
+    double y = (getHeight(window) - getHeight(label)) / 2;
+    setLocation(label, x, y);
+    add(window, label);
+    return label;
 }
 
 /**
