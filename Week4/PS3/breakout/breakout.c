@@ -22,12 +22,12 @@
 #define WIDTH 400
 
 // number of rows of bricks
-#define ROWS 5
+#define ROWS 3
 #define BRICK_HEIGHT 10
 #define BRICK_HEIGHT_BUFFER 50
 
 // number of columns of bricks
-#define COLS 10
+#define COLS 5
 
 //space between bricks
 #define BRICK_X_BUFFER 5
@@ -58,7 +58,7 @@ GLabel initScoreboard(GWindow window);
 void updateScoreboard(GWindow window, GLabel label, int points);
 GObject detectCollision(GWindow window, GOval ball);
 
-int main(void)
+int main(int argc, char* argv[])
 {
     // seed pseudorandom number generator
     srand48(time(NULL));
@@ -87,10 +87,12 @@ int main(void)
     // number of points initially
     int points = 0;
     
-    double x_velocity = 2+drand48()*SPEED_MULTIPLIER;
-    double y_velocity = 2+drand48()*SPEED_MULTIPLIER;
+    double x_velocity = 5+drand48()*SPEED_MULTIPLIER;
+    double y_velocity = 5+drand48()*SPEED_MULTIPLIER;
     
     bool readyToPlay=false;
+    
+    bool godMode = (argc==2) && strcmp(argv[1],"GOD")==0;
     
     // keep playing until game over
     while (lives > 0 && bricks > 0)
@@ -105,6 +107,8 @@ int main(void)
         {
             //Code to make ball move around
             move(ball,x_velocity,y_velocity);
+            if(godMode)
+                move(paddle,getX(ball)-getX(paddle)-drand48()*PADDLE_WIDTH/2,0);   //drand48 to prevent it going back and forth
             pause(PAUSE);
             
             GObject objectHit = detectCollision(window,ball);
@@ -117,9 +121,14 @@ int main(void)
                         removeGWindow(window, objectHit);
                         points++;
                         updateScoreboard(window,label,points);
+                        if(points==(ROWS*COLS))
+                        {
+                            printf("YOU WIN!!\n");
+                            return 0;
+                        }
                     }
                     else
-                        x_velocity = (getX(ball)+RADIUS/2-(getX(paddle)+PADDLE_WIDTH/2))/(PADDLE_WIDTH/4);
+                        x_velocity = (getX(ball)+RADIUS/2-(getX(paddle)+PADDLE_WIDTH/2)+drand48()*20)/(PADDLE_WIDTH/4);
                 }
                 
             if ( (getX(ball)+getWidth(ball)>=getWidth(window)) || (getX(ball)<=0))
