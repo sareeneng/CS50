@@ -89,11 +89,19 @@ int main(void)
     
     double x_velocity = drand48()*SPEED_MULTIPLIER+1;
     double y_velocity = drand48()*SPEED_MULTIPLIER*2+1;
-
+    
+    bool readyToPlay=false;
+    
     // keep playing until game over
     while (lives > 0 && bricks > 0)
     {
-        while(true)
+        GEvent eventWhilePaused = getNextEvent(MOUSE_EVENT);
+        
+        if(eventWhilePaused!=NULL)
+            if(getEventType(eventWhilePaused)==MOUSE_CLICKED)
+                readyToPlay=true;
+        
+        while(readyToPlay)
         {
             //Code to make ball move around
             move(ball,x_velocity,y_velocity);
@@ -112,8 +120,18 @@ int main(void)
                 
             if ( (getX(ball)+getWidth(ball)>=getWidth(window)) || (getX(ball)<=0))
                 x_velocity = -x_velocity;
-            if ( (getY(ball)+getWidth(ball)>=getHeight(window)) || (getY(ball)<=0))
+            
+            if ( getY(ball)<=0)
                 y_velocity = -y_velocity;
+            else if(getY(ball)>HEIGHT)
+            {
+                lives--;
+                removeGWindow(window,ball);
+                ball = initBall(window);
+                x_velocity = drand48()*SPEED_MULTIPLIER+1;
+                y_velocity = drand48()*SPEED_MULTIPLIER*2+1;
+                readyToPlay=false;
+            }
             
             // check for mouse event
             GEvent event = getNextEvent(MOUSE_EVENT);
