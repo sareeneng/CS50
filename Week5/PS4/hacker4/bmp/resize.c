@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
     int inPadding =  (4 - (inbi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
     int outPadding = (4 - (outbi.biWidth*sizeof(RGBTRIPLE)) % 4) % 4;
     
-    outbi.biSizeImage = (outbi.biWidth+outPadding)*-outbi.biHeight*3;
+    outbi.biSizeImage = outbi.biWidth*abs(outbi.biHeight)*3+(outPadding*abs(outbi.biHeight));
     outbf.bfSize = outbi.biSizeImage + outbf.bfOffBits;
 
     // write outfile's BITMAPFILEHEADER
