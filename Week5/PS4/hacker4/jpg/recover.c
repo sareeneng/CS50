@@ -34,9 +34,6 @@ int main(int argc, char* argv[])
     while(fread(buffer,sizeof(buffer),1,file)==1)
     {   
         
-//      fread(buffer,sizeof(buffer),1,file);
-        //FILEHEADER fh;
-        //fread(&fh, sizeof(FILEHEADER), 1, file);
         
         if (buffer[0]==255 && buffer[1]==216 && buffer[2]==255 && (buffer[3]==224 || buffer[3]==225))
         {
