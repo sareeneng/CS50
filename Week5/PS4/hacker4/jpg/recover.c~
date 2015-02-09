@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     }
     int counter=-1;
     uint8_t buffer[512];
-    while(fread(buffer,sizeof(buffer),1,file)==1)
+    while(fread(buffer,sizeof(buffer),1,file)==sizeof(buffer))
     {   
         
 //      fread(buffer,sizeof(buffer),1,file);
