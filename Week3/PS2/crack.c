@@ -25,8 +25,10 @@ int main(int argc, string argv[])
     string salt = GetSalt(fullKey);//Get salt, which is the first two letters of the encrypted key passed into the program
     
     if(dictionaryAttack(salt,fullKey)) //First let's run a dictionary attack and see if we get lucky
-        return 0;                       //If successful, end program. Otherwise, move on.
-    
+    {
+	free(salt);
+	return 0;                       //If successful, end program. Otherwise, move on.
+    }
     
     //Extract the key without the salt in it into a new string
     char *keyWithoutSalt = malloc(strlen(fullKey-2));
@@ -39,6 +41,7 @@ int main(int argc, string argv[])
     string prefix=malloc(4);
     bruteForce(prefix,0,8, salt, fullKey);
         
+    free(salt);
     return 0;
 }
 
