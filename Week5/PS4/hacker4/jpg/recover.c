@@ -10,15 +10,6 @@
  #include <stdio.h>
  #include <stdint.h>
  #include <stdlib.h>
- #include <string.h>
- 
-typedef struct
-{
-    uint8_t byte1;
-    uint8_t byte2;
-    uint8_t byte3;
-    uint8_t byte4;
-}FILEHEADER;
 
 int main(int argc, char* argv[])
 {
@@ -32,9 +23,7 @@ int main(int argc, char* argv[])
     int counter=-1;
     uint8_t buffer[512];
     while(fread(buffer,sizeof(buffer),1,file)==1)
-    {   
-        
-        
+    {          
         if (buffer[0]==255 && buffer[1]==216 && buffer[2]==255 && (buffer[3]==224 || buffer[3]==225))
         {
             //Generate filename
@@ -46,7 +35,7 @@ int main(int argc, char* argv[])
             currOutFile=fopen(fileName,"w");
         }
             
-        fwrite(buffer, sizeof(buffer), 1, currOutFile);
-        
+        fwrite(buffer, sizeof(buffer), 1, currOutFile);        
     }
+   
 }
