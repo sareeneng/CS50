@@ -16,6 +16,7 @@ int main(int argc, string argv[])
         pch = strtok(NULL," ,.-");
     }
     printf("\n");
+    free(name);
     return 0;
 }
 
