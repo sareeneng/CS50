@@ -10,6 +10,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 #include "dictionary.h"
 
@@ -23,13 +25,32 @@ struct trieNode
 
 void add(char*, struct trieNode*);
 
+struct trieNode* root;
 
 /**
  * Returns true if word is in dictionary else false.
  */
 bool check(const char* word)
 {
-    // TODO
+    struct trieNode* currNode = root;
+    for(int i=0; i<strlen(word); i++)
+    {
+        int index;
+        if(word[i]=='\'')
+            index = 26;
+        else
+            index = tolower(word[i])-97;
+        
+        if(currNode->children[index]!=NULL)
+            currNode = currNode->children[index];
+        else
+            return false;
+        
+        if(i==strlen(word)-1)
+            if(currNode->isWord==true)
+                return true;
+    }
+    
     return false;
 }
 
@@ -45,7 +66,7 @@ bool load(const char* dictionary)
     
     
     //Establish root
-    struct trieNode* root = malloc(sizeof(struct trieNode));
+    root = malloc(sizeof(struct trieNode));
     root->isWord=false;
     
     //Not sure if this is necessary yet
@@ -63,7 +84,7 @@ bool load(const char* dictionary)
     while(fgets(currWord, MAXWORDLENGTH+2, file)  )
         add(currWord, root);        //Pass in the memory address to the trie Node root       
         
-    return false;
+    return true;
 }
 
 /**
