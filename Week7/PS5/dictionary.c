@@ -24,8 +24,10 @@ struct trieNode
 };   
 
 void add(char*, struct trieNode*);
+void unloadRec(struct trieNode*);
 
 struct trieNode* root;
+int counter;
 
 /**
  * Returns true if word is in dictionary else false.
@@ -73,6 +75,7 @@ bool load(const char* dictionary)
     for(int i=0; i<27; i++)
         root->children[i]=NULL;
         
+        
     char currWord[MAXWORDLENGTH+2]; //add room for '\n' and '\0'
     
     FILE* file;
@@ -80,10 +83,14 @@ bool load(const char* dictionary)
     
     if(file == NULL)
         return false;
+        
+    counter=0;
     
     while(fgets(currWord, MAXWORDLENGTH+2, file)  )
+    {
+        counter++;
         add(currWord, root);        //Pass in the memory address to the trie Node root       
-        
+    }   
     return true;
 }
 
@@ -93,7 +100,7 @@ bool load(const char* dictionary)
 unsigned int size(void)
 {
     // TODO
-    return 0;
+    return counter;
 }
 
 /**
@@ -101,8 +108,19 @@ unsigned int size(void)
  */
 bool unload(void)
 {
-    // TODO
-    return false;
+    //Need to traverse the trie, unloading at each endpoint
+    unloadRec(root);
+    return true;
+}
+
+void unloadRec(struct trieNode* currNode)
+{
+    for(int i=0; i<27; i++)
+    {
+        if(currNode->children[i]!=NULL)
+            unloadRec(currNode->children[i]);
+    }
+    free(currNode);
 }
 
 void add(char* currWord, struct trieNode* parent)
