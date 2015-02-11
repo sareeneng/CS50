@@ -91,7 +91,9 @@ bool load(const char* dictionary)
         counter++;
         add(currWord, root);        //Pass in the memory address to the trie Node root       
     }   
+    fclose(file);
     return true;
+    
 }
 
 /**
