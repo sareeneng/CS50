@@ -201,8 +201,13 @@ int main(int argc, char* argv[])
             	query="";
 
             char* absolute_path;
-            strncpy(absolute_path, request_target, strlen(request_target)-strlen(query)-1);
-            absolute_path[strlen(absolute_path)-4]='\0';
+            if(has_query)
+            {	
+            	strncpy(absolute_path, request_target, strlen(request_target)-strlen(query)-1);
+            	absolute_path[strlen(absolute_path)-4]='\0';
+            }
+            else
+            	absolute_path=request_target;
 
             // TODO: concatenate root and absolute-path
             char path[strlen(root)+strlen(absolute_path)+1];
@@ -218,14 +223,19 @@ int main(int argc, char* argv[])
 
 
             // TODO: ensure path exists
+            if(access(path, F_OK)==-1)
+            	error(404);
             
             // TODO: ensure path is readable
- 
+ 			if(access(path,R_OK)==-1)
+ 				error(403);
             // TODO: extract path's extension
-            char extension[] = "TODO";
+            char* extension;
+            extension = strstr(absolute_path,".");
+            extension++;
 
             // dynamic content
-            if (strcasecmp("php", extension) == 0)
+            if (strcmp("php", extension) == 0)
             {
                 // open pipe to PHP interpreter
                 char* format = "QUERY_STRING=\"%s\" REDIRECT_STATUS=200 SCRIPT_FILENAME=\"%s\" php-cgi";
@@ -303,6 +313,26 @@ int main(int argc, char* argv[])
                 }
 
                 // TODO: respond to client
+                if (dprintf(cfd, "HTTP/1.1 200 OK\r\n") < 0)
+                {
+                    continue;
+                }
+                if (dprintf(cfd, "Connection: close\r\n") < 0)
+                {
+                    continue;
+                }
+                if (dprintf(cfd, "Content-Length: %zu\r\n", length) < 0)
+                {
+                    continue;
+                }
+                if (dprintf(cfd, "Content-Length: %s", type) < 0)
+                {
+                	continue;
+                }
+                if (write(cfd, body, length) == -1)
+                {
+                    continue;
+                }
             }
             
             // announce OK
@@ -503,7 +533,20 @@ void handler(int signal)
  */
 const char* lookup(const char* extension)
 {
-    // TODO
+    if (strcmp("css", extension) == 0)
+    	return "text/css";
+    else if (strcmp("html", extension) == 0)
+    	return "text/html";
+    else if (strcmp("gif", extension) == 0)
+    	return "image/gif";
+    else if (strcmp("ico", extension) == 0)
+    	return "image/x-icon";
+    else if (strcmp("jpeg", extension) == 0)
+    	return "image/jpeg";
+    else if (strcmp("js", extension) == 0)
+    	return "text/javascript";
+    else if (strcmp("png", extension) == 0)
+    	return "image/png";
     return NULL;
 }
 
