@@ -146,9 +146,48 @@ int main(int argc, char* argv[])
             printf("%s", line);
 
             // TODO: validate request-line
+            char method[5];
+            strncpy(method,line,4);
+            method[4]='\0';
+            if(strcmp(method,"GET ")!=0)
+            	error(405);
+
+            char* request_target;
+            strncpy(request_target,&line[4],strlen(line)-4);
+
+            bool has_file_extension = false;
+            if(request_target!=NULL)
+            {
+            	if(request_target[0]!='/')
+            		error(501);
+            	char* temp;
+            	if(strstr(request_target, "\%22")!=0)
+            		error(400);
+
+            	for(int i=0; i<strlen(request_target); i++)	
+	            {
+	            	if(request_target[i]=='.')
+	            		has_file_extension=true;
+	            	if(request_target[i]==' ')
+	            	{
+	            		request_target[i]='\0';
+	            		break;
+	            	}
+	            }
+            }
+            else
+            	error(501);
+
+            if(!has_file_extension)
+            	error(501);
+
+            char* httpversion = strstr(line," HTTP/1.1\r\n");
+            if(httpversion==NULL)
+            	error(505);
+
 
             // TODO: extract query from request-target
-            char query[] = "TODO";
+            char query[];
 
             // TODO: concatenate root and absolute-path
             char path[] = "TODO";
