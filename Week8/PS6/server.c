@@ -152,7 +152,7 @@ int main(int argc, char* argv[])
             if(strcmp(method,"GET ")!=0)
             	error(405);
 
-            char* request_target;
+            char* request_target = malloc(256);
             strncpy(request_target,&line[4],strlen(line)-4);
 
             bool has_file_extension = false;
@@ -162,7 +162,6 @@ int main(int argc, char* argv[])
             {
             	if(request_target[0]!='/')
             		error(501);
-            	char* temp;
             	if(strstr(request_target, "\%22")!=0)
             		error(400);
 
@@ -200,7 +199,7 @@ int main(int argc, char* argv[])
             else
             	query="";
 
-            char* absolute_path;
+            char* absolute_path = NULL;
             if(has_query)
             {	
             	strncpy(absolute_path, request_target, strlen(request_target)-strlen(query)-1);
