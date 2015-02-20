@@ -156,6 +156,7 @@ int main(int argc, char* argv[])
             strncpy(request_target,&line[4],strlen(line)-4);
 
             bool has_file_extension = false;
+            bool has_query = false;
             if(request_target!=NULL)
             {
             	if(request_target[0]!='/')
@@ -168,6 +169,8 @@ int main(int argc, char* argv[])
 	            {
 	            	if(request_target[i]=='.')
 	            		has_file_extension=true;
+	            	if(request_target[i]=='\?')
+	            		has_query=true;
 	            	if(request_target[i]==' ')
 	            	{
 	            		request_target[i]='\0';
@@ -187,7 +190,14 @@ int main(int argc, char* argv[])
 
 
             // TODO: extract query from request-target
-            char query[];
+            char* query; 
+            if(has_query)
+            {
+            	query = strstr(request_target,"\?");
+            	query++; //remove question-mark
+            }
+            else
+            	query="";
 
             // TODO: concatenate root and absolute-path
             char path[] = "TODO";
@@ -240,7 +250,7 @@ int main(int argc, char* argv[])
                 {
                     continue;
                 }
-                if (dprintf(cfd, "Content-Length: %i\r\n", length) < 0)
+                if (dprintf(cfd, "Content-Length: %zu\r\n", length) < 0)
                 {
                     continue;
                 }
