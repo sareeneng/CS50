@@ -161,10 +161,15 @@ int main(int argc, char* argv[])
             if(request_target!=NULL)
             {
             	if(request_target[0]!='/')
+            	{	
             		error(501);
+            		continue;
+				}
             	if(strstr(request_target, "\%22")!=0)
+            	{
             		error(400);
-
+            		continue;
+            	}	
             	for(int i=0; i<strlen(request_target); i++)	
 	            {
 	            	if(request_target[i]=='.')
@@ -179,15 +184,22 @@ int main(int argc, char* argv[])
 	            }
             }
             else
+            {
             	error(501);
-
+            	continue;
+            }
             if(!has_file_extension)
+            {
             	error(501);
+            	continue;
+            }	
 
             char* httpversion = strstr(line," HTTP/1.1\r\n");
             if(httpversion==NULL)
+            {
             	error(505);
-
+            	continue;
+            }
 
             // TODO: extract query from request-target
             char* query; 
@@ -199,11 +211,11 @@ int main(int argc, char* argv[])
             else
             	query="";
 
-            char* absolute_path = NULL;
+            char* absolute_path = malloc(256);
             if(has_query)
             {	
             	strncpy(absolute_path, request_target, strlen(request_target)-strlen(query)-1);
-            	absolute_path[strlen(absolute_path)-4]='\0';
+            	absolute_path[strlen(absolute_path)]='\0';
             }
             else
             	absolute_path=request_target;
@@ -223,11 +235,17 @@ int main(int argc, char* argv[])
 
             // TODO: ensure path exists
             if(access(path, F_OK)==-1)
+            {
             	error(404);
+            	continue;
+            }
             
             // TODO: ensure path is readable
  			if(access(path,R_OK)==-1)
+ 			{
  				error(403);
+ 				continue;
+ 			}
             // TODO: extract path's extension
             char* extension;
             extension = strstr(absolute_path,".");
@@ -324,7 +342,7 @@ int main(int argc, char* argv[])
                 {
                     continue;
                 }
-                if (dprintf(cfd, "Content-Length: %s", type) < 0)
+                if (dprintf(cfd, "Content-Type: %s\r\n\r\n", type) < 0)
                 {
                 	continue;
                 }
@@ -540,7 +558,7 @@ const char* lookup(const char* extension)
     	return "image/gif";
     else if (strcmp("ico", extension) == 0)
     	return "image/x-icon";
-    else if (strcmp("jpeg", extension) == 0)
+    else if (strcmp("jpg", extension) == 0)
     	return "image/jpeg";
     else if (strcmp("js", extension) == 0)
     	return "text/javascript";
