@@ -157,6 +157,7 @@ int main(int argc, char* argv[])
 
             bool has_file_extension = false;
             bool has_query = false;
+
             if(request_target!=NULL)
             {
             	if(request_target[0]!='/')
@@ -199,8 +200,22 @@ int main(int argc, char* argv[])
             else
             	query="";
 
+            char* absolute_path;
+            strncpy(absolute_path, request_target, strlen(request_target)-strlen(query)-1);
+            absolute_path[strlen(absolute_path)-4]='\0';
+
             // TODO: concatenate root and absolute-path
-            char path[] = "TODO";
+            char path[strlen(root)+strlen(absolute_path)+1];
+            for(int i=0; i<strlen(root); i++)
+            {
+            	path[i]=root[i];
+            }
+            for(int i=0, j=strlen(root); i<strlen(absolute_path); i++,j++)
+            {
+            	path[j] = absolute_path[i];
+            }
+            path[strlen(root)+strlen(absolute_path)]='\0';
+
 
             // TODO: ensure path exists
             
