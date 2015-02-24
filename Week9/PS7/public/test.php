@@ -1,4 +1,5 @@
 <?php
 //require("../includes/config.php"); 
-print("ok");
+printf("ok");
+sprintf(curl_version()["version"]);
 ?>
