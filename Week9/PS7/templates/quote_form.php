@@ -8,4 +8,6 @@
         </div>
     </fieldset>
 </form>
-
+<div>
+    or <a href="logout.php">log out</a>
+</div>
