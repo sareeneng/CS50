@@ -13,7 +13,7 @@
 		print("</tr>");
 	}
 ?>
-<tr><td><b>CASH</b></td><td></td><td></td><td></td><td>$<?= number_format($cash[0]["cash"], 2)?></td></tr>
+<tr><td><b>CASH</b></td><td></td><td></td><td></td><td>$<?= number_format($_SESSION["cash"], 2)?></td></tr>
 </table>
 
 

@@ -7,8 +7,9 @@
     $sql_query = "SELECT * FROM `ownedstocks` WHERE id=" . $_SESSION["id"];
 	$rows = query($sql_query);
 
-	$cash = query("SELECT cash FROM `users` WHERE id=" . $_SESSION["id"]);
-	
+	$cash_assoc_array = query("SELECT cash FROM `users` WHERE id=" . $_SESSION["id"]);
+	$_SESSION["cash"] = $cash_assoc_array[0]["cash"];
+
 
 	$positions = [];
 	foreach ($rows as $row) 
@@ -27,5 +28,5 @@
 
 
     // render portfolio
-    render("portfolio.php", ["positions" => $positions, "title" => "Portfolio", "cash"=>$cash]);
+    render("portfolio.php", ["positions" => $positions, "title" => "Portfolio"]);
 ?>
