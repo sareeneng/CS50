@@ -31,6 +31,12 @@
 		query("UPDATE users SET cash = ? WHERE id=?",$_SESSION["cash"],$_SESSION["id"]);
 		query("INSERT INTO ownedstocks (id, symbol, shares) VALUES(?,?,?) ON DUPLICATE KEY UPDATE shares = shares + VALUES(shares)", $_SESSION["id"], $symbol, $numShares);
 
+		//If all above successful, add to history
+		$timestamp = new DateTime();
+		
+		query("INSERT INTO history (id, buy_or_sell, symbol, shares, price, timestamp) VALUES (?,?,?,?,?,?)",
+		$_SESSION["id"], "BUY", $symbol, $numShares, $price, date_format($timestamp, 'Y-m-d H:i:s'));
+
 		redirect("/");
 	}
 ?>

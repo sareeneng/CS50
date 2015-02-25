@@ -22,6 +22,12 @@
 		//Update table accordingly
 		query("UPDATE users SET cash = ? WHERE id = ?", $_SESSION["cash"], $_SESSION["id"]);
 		query("DELETE from ownedstocks WHERE id = ? AND symbol = ?", $_SESSION["id"], $symbol);
+
+		$timestamp = new DateTime();
+
+		query("INSERT INTO history (id, buy_or_sell, symbol, shares, price, timestamp) VALUES (?,?,?,?,?,?)",
+		$_SESSION["id"], "SELL", $symbol, $shares, $price, date_format($timestamp, 'Y-m-d H:i:s'));
+
 		redirect("/");
 	}
 ?>
