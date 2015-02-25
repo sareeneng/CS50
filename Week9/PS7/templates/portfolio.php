@@ -2,6 +2,7 @@
 <a href="sell.php">Sell</a>
 <a href="quote.php">Lookup</a>
 <a href="history.php">History</a>
+<a href="change_password.php">Change Password</a>
 
 <table class="table table-bordered">
 
