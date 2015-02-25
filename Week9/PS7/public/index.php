@@ -25,8 +25,6 @@
         	];
     	}
 	}
-
-
     // render portfolio
     render("portfolio.php", ["positions" => $positions, "title" => "Portfolio"]);
 ?>

@@ -1,4 +1,11 @@
+<a href="buy.php">Buy</a>
+<a href="sell.php">Sell</a>
+<a href="quote.php">Lookup</a>
+<a href="history.php">History</a>
+
 <table class="table table-bordered">
+
+
 <tr><td><b>Ticker</b></td><td><b>Name</b></td><td><b>Shares</b></td><td><b>Price</b></td><td><b>Total</b></td></tr>
 <?php
 	foreach ($positions as $position)
