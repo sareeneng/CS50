@@ -77,7 +77,37 @@ function addMarker(place)
     var marker = new google.maps.Marker({
         position: latlng,
         map: map,
-    })
+    });
+    
+
+    google.maps.event.addListener(marker, 'click', function() {
+        var content=place.postal_code + "<br><ul>";
+        var parameters = {
+        geo: place.postal_code
+        };
+
+        $.getJSON("articles.php", parameters)
+        .done(function(data, textStatus, jqXHR) {
+
+        if(data.length>0)
+        {
+            for (var i = 0; i < data.length; i++)
+            {
+                content = content + "<li><a href = " + data[i].link + ">" + data[i].title + "</a>";
+            }
+            content = content + "</ul>";
+        }
+        else
+        {
+            content = content + "Sorry, no articles found for this location</ul>";
+        }
+        
+        showInfo(marker,content);
+        });
+
+    });
+
+    
     markers.push(marker);
 }
 
