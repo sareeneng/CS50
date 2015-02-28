@@ -73,6 +73,12 @@ $(function() {
 function addMarker(place)
 {
     // TODO
+    var latlng = new google.maps.LatLng(place.latitude, place.longitude);
+    var marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+    })
+    markers.push(marker);
 }
 
 /**
@@ -157,7 +163,10 @@ function hideInfo()
  */
 function removeMarkers()
 {
-    // TODO
+    for(i=0; i<markers.length; i++)
+    {
+        markers[i].setMap(null);
+    }
 }
 
 /**
